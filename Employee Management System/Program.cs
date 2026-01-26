@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Employee Management System - Week 1 & 2 Assessment
+
+using System;
 
 class Program
 {
