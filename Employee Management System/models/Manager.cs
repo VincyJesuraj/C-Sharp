@@ -1,8 +1,10 @@
-﻿class Manager : Employee
+﻿//Inheritance
+class Manager : Employee
 {
     public int TeamSize { get; set; }
     public string Level { get; set; }
 
+    //Constructor with base
     public Manager(int id, string name, string department, double salary,
                    int teamSize, string level)
         : base(id, name, department, salary)
@@ -12,7 +14,7 @@
       
     }
 
-    // Polymorphism
+    // Method Overriding (Polymorphism)
     public override void Display()
     {
         Console.WriteLine(

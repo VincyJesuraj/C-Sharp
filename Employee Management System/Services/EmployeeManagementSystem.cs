@@ -10,6 +10,7 @@ class EmployeeManagementSystem
         Console.WriteLine("Employee added");
     }
 
+    //Runtime Polymorphism
     public void ShowEmployees()
     {
         foreach (Employee emp in employees)
@@ -18,6 +19,7 @@ class EmployeeManagementSystem
         }
     }
 
+    //Uses properties (Encapsulation)..No direct access to private fields
     public void UpdateSalary(int id, double salary)
     {
         foreach (Employee emp in employees)
