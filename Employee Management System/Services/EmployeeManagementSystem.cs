@@ -37,4 +37,44 @@ class EmployeeManagementSystem
         employees.RemoveAll(emp => emp.Id == id);
         Console.WriteLine("Employee removed");
     }
+
+    public void SearchByName(string name)
+    {
+        bool found = false;
+
+        foreach (Employee emp in employees)
+        {
+            if (emp.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            {
+                emp.Display();
+                found = true;
+            }
+        }
+
+        if (!found)
+            Console.WriteLine("Employee not found");
+    }
+
+    public void TotalEmployees()
+    {
+        Console.WriteLine("Total Employees: " + employees.Count);
+    }
+
+    public void ShowByDepartment(string dept)
+    {
+        bool found = false;
+
+        foreach (Employee emp in employees)
+        {
+            if (emp.Department.Equals(dept, StringComparison.OrdinalIgnoreCase))
+            {
+                emp.Display();
+                found = true;
+            }
+        }
+
+        if (!found)
+            Console.WriteLine("No employees in this department");
+    }
+
 }

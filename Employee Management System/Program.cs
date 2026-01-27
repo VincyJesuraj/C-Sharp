@@ -16,7 +16,10 @@ class Program
             Console.WriteLine("3. Show Employees");
             Console.WriteLine("4. Update Salary");
             Console.WriteLine("5. Delete Employee");
-            Console.WriteLine("6. Exit");
+            Console.WriteLine("6. Search Employee by Name");
+            Console.WriteLine("7. Show Total Employees");
+            Console.WriteLine("8. Show Employees by Department");
+            Console.WriteLine("9. Exit");
             Console.Write("Enter choice: ");
 
             choice = int.Parse(Console.ReadLine());
@@ -45,9 +48,15 @@ class Program
                     string mdept = Console.ReadLine();
                     Console.Write("Salary: ");
                     double msal = double.Parse(Console.ReadLine());
+                    Console.Write("Team Size: ");
+                    int teamSize = int.Parse(Console.ReadLine());
+                    Console.Write("Level (Junior/Senior/Lead): ");
+                    string level = Console.ReadLine();
 
-                    ems.AddEmployee(new Manager(mid, mname, mdept, msal));
+                    Manager mgr = new Manager(mid, mname, mdept, msal, teamSize, level);
+                    ems.AddEmployee(mgr);
                     break;
+
 
                 case 3:
                     ems.ShowEmployees();
@@ -66,8 +75,22 @@ class Program
                     int did = int.Parse(Console.ReadLine());
                     ems.RemoveEmployee(did);
                     break;
+
+                case 6:
+                    Console.Write("Enter Name: ");
+                    ems.SearchByName(Console.ReadLine());
+                    break;
+
+                case 7:
+                    ems.TotalEmployees();
+                    break;
+
+                case 8:
+                    Console.Write("Enter Department: ");
+                    ems.ShowByDepartment(Console.ReadLine());
+                    break;
             }
 
-        } while (choice != 6);
+        } while (choice != 9);
     }
 }
