@@ -1,6 +1,4 @@
-﻿// Employee Management System - Week 1 & 2 Assessment
-
-using System;
+﻿using System;
 
 class Program
 {
@@ -11,86 +9,49 @@ class Program
 
         do
         {
-            Console.WriteLine("\n1. Add Employee");
+            Console.WriteLine("\n---- EMPLOYEE MANAGEMENT SYSTEM ----");
+            Console.WriteLine("1. Add Employee");
             Console.WriteLine("2. Add Manager");
             Console.WriteLine("3. Show Employees");
             Console.WriteLine("4. Update Salary");
             Console.WriteLine("5. Delete Employee");
-            Console.WriteLine("6. Search Employee by Name");
-            Console.WriteLine("7. Show Total Employees");
-            Console.WriteLine("8. Show Employees by Department");
-            Console.WriteLine("9. Exit");
-            Console.Write("Enter choice: ");
+            Console.WriteLine("6. Show Total Employees");
+            Console.WriteLine("7. Exit");
 
-            choice = int.Parse(Console.ReadLine());
+            Console.Write("Enter choice: ");
+            if (!int.TryParse(Console.ReadLine(), out choice))
+            {
+                Console.WriteLine("Invalid choice");
+                continue;
+            }
 
             switch (choice)
             {
-                case 1:
-                    Console.Write("Id: ");
-                    int id = int.Parse(Console.ReadLine());
-                    Console.Write("Name: ");
-                    string name = Console.ReadLine();
-                    Console.Write("Department: ");
-                    string dept = Console.ReadLine();
-                    Console.Write("Salary: ");
-                    double sal = double.Parse(Console.ReadLine());
-
-                    ems.AddEmployee(new Employee(id, name, dept, sal));
+                case 1: 
+                    ems.AddEmployee(); 
                     break;
-
-                case 2:
-                    Console.Write("Id: ");
-                    int mid = int.Parse(Console.ReadLine());
-                    Console.Write("Name: ");
-                    string mname = Console.ReadLine();
-                    Console.Write("Department: ");
-                    string mdept = Console.ReadLine();
-                    Console.Write("Salary: ");
-                    double msal = double.Parse(Console.ReadLine());
-                    Console.Write("Team Size: ");
-                    int teamSize = int.Parse(Console.ReadLine());
-                    Console.Write("Level (Junior/Senior/Lead): ");
-                    string level = Console.ReadLine();
-
-                    Manager mgr = new Manager(mid, mname, mdept, msal, teamSize, level);
-                    ems.AddEmployee(mgr);
+                case 2: 
+                    ems.AddManager(); 
                     break;
-
-
-                case 3:
-                    ems.ShowEmployees();
+                case 3: 
+                    ems.ShowEmployees(); 
                     break;
-
-                case 4:
-                    Console.Write("Enter Id: ");
-                    int uid = int.Parse(Console.ReadLine());
-                    Console.Write("New Salary: ");
-                    double nsal = double.Parse(Console.ReadLine());
-                    ems.UpdateSalary(uid, nsal);
+                case 4: 
+                    ems.UpdateSalary(); 
                     break;
-
-                case 5:
-                    Console.Write("Enter Id: ");
-                    int did = int.Parse(Console.ReadLine());
-                    ems.RemoveEmployee(did);
+                case 5: 
+                    ems.RemoveEmployee(); 
                     break;
-
-                case 6:
-                    Console.Write("Enter Name: ");
-                    ems.SearchByName(Console.ReadLine());
+                case 6: 
+                    ems.TotalEmployees(); 
                     break;
-
-                case 7:
-                    ems.TotalEmployees();
+                case 7: 
+                    Console.WriteLine("Exiting program..."); 
                     break;
-
-                case 8:
-                    Console.Write("Enter Department: ");
-                    ems.ShowByDepartment(Console.ReadLine());
+                default: Console.WriteLine("Invalid choice"); 
                     break;
             }
 
-        } while (choice != 9);
+        } while (choice != 7);
     }
 }
