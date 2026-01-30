@@ -1,51 +1,29 @@
-﻿using System;
+﻿using EmployeeManagementSystem.Interfaces;
 
-class Employee
+namespace EmployeeManagementSystem.Models
 {
-    private int id;
-    private string name;
-    private string department;
-    private double salary;
-    private string managerName;
-
-    public Employee(int id, string name, string department, double salary, string managerName)
+    class Employee : IDisplayable
     {
-        this.id = id;
-        this.name = name;
-        this.department = department;
-        this.salary = salary;
-        this.managerName = managerName;
-    }
+        private static int _autoId = 1;
 
-    public int Id
-    {
-        get { return id; }
-    }
+        public int Id { get; private set; }
+        public string Name { get; set; }
+        public string Department { get; set; }
+        public double Salary { get; set; }
+        public string TeamLeadName { get; set; }
 
-    public string Name
-    {
-        get { return name; }
-    }
+        public Employee(string name, string department, double salary, string teamLeadName)
+        {
+            Id = _autoId++;
+            Name = name;
+            Department = department;
+            Salary = salary;
+            TeamLeadName = teamLeadName;
+        }
 
-    public string ManagerName
-    {
-        get { return managerName; }
-    }
-
-    public string Department
-    {
-        get { return department; }
-        set { department = value; }
-    }
-
-    public double Salary
-    {
-        get { return salary; }
-        set { salary = value; }
-    }
-
-    public virtual void Display()
-    {
-        Console.WriteLine($"{id} | {name} | {department} | {salary} | Manager: {managerName}");
+        public virtual void Display()
+        {
+            System.Console.WriteLine($"ID:{Id} | Name:{Name} | Dept:{Department} | Salary:{Salary} | TeamLead:{TeamLeadName}");
+        }
     }
 }

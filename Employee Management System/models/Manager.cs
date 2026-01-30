@@ -1,19 +1,26 @@
-﻿using System;
+﻿using System.Linq;
+using EmployeeManagementSystem.Interfaces;
+using EmployeeManagementSystem.Services;
 
-class Manager : Employee
+namespace EmployeeManagementSystem.Models
 {
-    public string Level { get; set; }
-
-    public Manager(int id, string name, string department, double salary, string level)
-        : base(id, name, department, salary, "None")
+    class Manager : Employee, IHasTeamSize
     {
-        Level = level;
-    }
+        public Manager(string name, string department, double salary)
+            : base(name, department, salary, "N/A") { }
 
-    public void DisplayWithTeamSize(int teamSize)
-    {
-        Console.WriteLine(
-            $"Manager -> {Id} | {Name} | {Department} | {Salary} | Level: {Level} | Team Size: {teamSize}"
-        );
+        public int GetTeamSize()
+        {
+            int teamLeads = EmployeeManagementService.TeamLeads.Count(t => t.ManagerName == Name);
+            int employees = EmployeeManagementService.Employees.Count(e =>
+                EmployeeManagementService.TeamLeads.Any(t => t.Name == e.TeamLeadName && t.ManagerName == Name));
+
+            return teamLeads + employees;
+        }
+
+        public override void Display()
+        {
+            System.Console.WriteLine($"[Manager] ID:{Id} | Name:{Name} | Dept:{Department} | Salary:{Salary}");
+        }
     }
 }

@@ -1,57 +1,59 @@
 ﻿using System;
+using EmployeeManagementSystem.Services;
 
-class Program
+namespace EmployeeManagementSystem
 {
-    static void Main()
+    class Program
     {
-        EmployeeManagementSystem ems = new EmployeeManagementSystem();
-        int choice;
-
-        do
+        static void Main()
         {
-            Console.WriteLine("\n---- EMPLOYEE MANAGEMENT SYSTEM ----");
-            Console.WriteLine("1. Add Employee");
-            Console.WriteLine("2. Add Manager");
-            Console.WriteLine("3. Show Employees");
-            Console.WriteLine("4. Update Salary");
-            Console.WriteLine("5. Delete Employee");
-            Console.WriteLine("6. Show Total Employees");
-            Console.WriteLine("7. Exit");
-
-            Console.Write("Enter choice: ");
-            if (!int.TryParse(Console.ReadLine(), out choice))
+            while (true)
             {
-                Console.WriteLine("Invalid choice");
-                continue;
-            }
+                Console.WriteLine("\n----- EMPLOYEE MANAGEMENT SYSTEM -----");
+                Console.WriteLine("1. Add Manager");
+                Console.WriteLine("2. Add Team Lead");
+                Console.WriteLine("3. Add Employee");
+                Console.WriteLine("4. Update Salary");
+                Console.WriteLine("5. Team Size of Team Lead");
+                Console.WriteLine("6. Team Size of Manager");
+                Console.WriteLine("7. Show Employees under Manager");
+                Console.WriteLine("8. Show Employees by Department");
+                Console.WriteLine("9. Exit");
 
-            switch (choice)
-            {
-                case 1: 
-                    ems.AddEmployee(); 
-                    break;
-                case 2: 
-                    ems.AddManager(); 
-                    break;
-                case 3: 
-                    ems.ShowEmployees(); 
-                    break;
-                case 4: 
-                    ems.UpdateSalary(); 
-                    break;
-                case 5: 
-                    ems.RemoveEmployee(); 
-                    break;
-                case 6: 
-                    ems.TotalEmployees(); 
-                    break;
-                case 7: 
-                    Console.WriteLine("Exiting program..."); 
-                    break;
-                default: Console.WriteLine("Invalid choice"); 
-                    break;
-            }
+                int choice = EmployeeManagementService.ReadInt("Enter choice: ");
 
-        } while (choice != 7);
+                switch (choice)
+                {
+                    case 1: 
+                        EmployeeManagementService.AddManager(); 
+                        break;
+                    case 2: 
+                        EmployeeManagementService.AddTeamLead(); 
+                        break;
+                    case 3: 
+                        EmployeeManagementService.AddEmployee(); 
+                        break;
+                    case 4: 
+                        EmployeeManagementService.UpdateSalary(); 
+                        break;
+                    case 5: 
+                        EmployeeManagementService.TeamSizeTeamLead(); 
+                        break;
+                    case 6: 
+                        EmployeeManagementService.TeamSizeManager(); 
+                        break;
+                    case 7: 
+                        EmployeeManagementService.ShowEmployeesUnderManager(); 
+                        break;
+                    case 8: 
+                        EmployeeManagementService.ShowEmployeesByDepartment(); 
+                        break;
+                    case 9: 
+                        return;
+                    default: Console.WriteLine("Invalid choice"); 
+                        break;
+                }
+            }
+        }
     }
 }
