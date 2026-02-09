@@ -1,43 +1,26 @@
-﻿class Manager : Employee
+﻿using System.Linq;
+using EmployeeManagementSystem.Interfaces;
+using EmployeeManagementSystem.Services;
+
+namespace EmployeeManagementSystem.Models
 {
-    public int TeamSize { get; set; }
-    public string Level { get; set; }
-
-    public Manager(int id, string name, string department, double salary,
-                   int teamSize, string level)
-        : base(id, name, department, salary)
+    class Manager : Employee, IHasTeamSize
     {
-        TeamSize = teamSize;
-        Level = level;
-      
-    }
+        public Manager(string name, string department, double salary)
+            : base(name, department, salary, "N/A") { }
 
-    // Polymorphism
-    public override void Display()
-    {
-        Console.WriteLine(
-            "Manager -> " +
-            Id + " | " +
-            Name + " | " +
-            Department + " | " +
-            Salary + " | " +
-            "Team Size: " + TeamSize + " | " +
-            "Level: " + Level + " | " 
-        );
-    }
+        public int GetTeamSize()
+        {
+            int teamLeads = EmployeeManagementService.TeamLeads.Count(t => t.ManagerName == Name);
+            int employees = EmployeeManagementService.Employees.Count(e =>
+                EmployeeManagementService.TeamLeads.Any(t => t.Name == e.TeamLeadName && t.ManagerName == Name));
 
-    public void Promote(string newLevel)
-    {
-        Level = newLevel;
-        Console.WriteLine("Manager promoted to " + newLevel);
-    }
+            return teamLeads + employees;
+        }
 
-    public void UpdateTeamSize(int newSize)
-    {
-        TeamSize = newSize;
-        Console.WriteLine("Team size updated");
+        public override void Display()
+        {
+            System.Console.WriteLine($"[Manager] ID:{Id} | Name:{Name} | Dept:{Department} | Salary:{Salary}");
+        }
     }
-
-    
 }
-
