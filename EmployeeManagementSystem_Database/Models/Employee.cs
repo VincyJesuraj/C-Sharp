@@ -9,7 +9,7 @@ namespace EmployeeManagementSystem.Models
         Manager
     }
 
-   
+    // Struct 
     public struct SalaryInfo
     {
         public double BaseSalary { get; set; }
@@ -31,15 +31,15 @@ namespace EmployeeManagementSystem.Models
         public string Name { get; set; }
         public string Department { get; set; }
 
-        
+        // initializing Struct
         public double Salary { get; set; }
 
-        
+
         public SalaryInfo SalaryDetails { get; set; }
 
         public string TeamLeadName { get; set; }
 
-        
+
         public RoleType Role { get; set; }
 
         public Employee(string name, string department, double salary, string teamLeadName)
@@ -49,6 +49,7 @@ namespace EmployeeManagementSystem.Models
             Department = department;
             Salary = salary;
 
+            // Initialize struct
             SalaryDetails = new SalaryInfo(salary, 0);
 
             TeamLeadName = teamLeadName;

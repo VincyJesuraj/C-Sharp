@@ -16,7 +16,7 @@ namespace EmployeeManagementSystem.Services
         public static List<TeamLead> TeamLeads = new();
         public static List<Manager> Managers = new();
 
-        
+        // checks for the duplicate names 
         private static bool NameExists(string name)
         {
             if (Employees.Any(e => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) ||
@@ -43,7 +43,7 @@ namespace EmployeeManagementSystem.Services
             return (int)cmd.ExecuteScalar() > 0;
         }
 
-        
+
         public static void SyncAutoId()
         {
             using SqlConnection con = new(connectionString);
@@ -102,7 +102,7 @@ namespace EmployeeManagementSystem.Services
                         r["TeamLeadName"].ToString()));
         }
 
-        
+        // Adding Manager
         public static void AddManager()
         {
             string name;
@@ -135,7 +135,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Manager added successfully");
         }
 
-        
+        // Adding Team Lead
         public static void AddTeamLead()
         {
             string name;
@@ -170,7 +170,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Team Lead added successfully");
         }
 
-        
+        //Adding Employee
         public static void AddEmployee()
         {
             string name;
@@ -205,7 +205,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Employee added successfully");
         }
 
-
+        // Updating Salary
         public static void UpdateSalary()
         {
             int id = ReadInt("Enter ID: ");
@@ -225,7 +225,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Salary updated");
         }
 
-        
+        // To find number of employees under Team Lead
         public static void TeamSizeTeamLead()
         {
             string name = ReadString("Team Lead Name: ");
@@ -240,7 +240,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine($"Team size = {tl.GetTeamSize()}");
         }
 
-        
+        // Team size of the manager = no. of employees + no. of Team Lead
         public static void TeamSizeManager()
         {
             string name = ReadString("Manager Name: ");
@@ -255,7 +255,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine($"Team size = {m.GetTeamSize()}");
         }
 
-       
+        // Showing Employees under Manager
         public static void ShowEmployeesUnderManager()
         {
             string manager = ReadString("Manager Name: ");
@@ -274,7 +274,7 @@ namespace EmployeeManagementSystem.Services
                      .ForEach(e => e.Display());
         }
 
-        
+        // Showing Employees by Department
         public static void ShowEmployeesByDepartment()
         {
             string dept = ReadString("Department: ");
@@ -294,7 +294,7 @@ namespace EmployeeManagementSystem.Services
             result.ForEach(x => x.Display());
         }
 
-
+        // Deleting Manager 
         public static void DeleteManagerByName()
         {
             string name = ReadString("Manager Name to delete: ");
@@ -312,19 +312,19 @@ namespace EmployeeManagementSystem.Services
                 return;
             }
 
-           
+
             SqlCommand clearRefs = new(
                 "UPDATE TeamLeads SET ManagerName = NULL WHERE ManagerName=@Name", conn);
             clearRefs.Parameters.AddWithValue("@Name", name);
             clearRefs.ExecuteNonQuery();
 
-            
+
             SqlCommand delete = new(
                 "DELETE FROM Managers WHERE Name=@Name", conn);
             delete.Parameters.AddWithValue("@Name", name);
             delete.ExecuteNonQuery();
 
-            
+
             Managers.RemoveAll(m => m.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             TeamLeads.Where(t => t.ManagerName == name)
                      .ToList()
@@ -334,7 +334,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Manager deleted successfully.");
         }
 
-        
+        // Deleting Team Lead
         public static void DeleteTeamLeadByName()
         {
             string name = ReadString("Team Lead Name to delete: ");
@@ -352,19 +352,19 @@ namespace EmployeeManagementSystem.Services
                 return;
             }
 
-            
+            // Clear teamlead reference in SQL
             SqlCommand clearRefs = new(
                 "UPDATE Employees SET TeamLeadName = NULL WHERE TeamLeadName=@Name", conn);
             clearRefs.Parameters.AddWithValue("@Name", name);
             clearRefs.ExecuteNonQuery();
 
-            
+            // Delete from SQL
             SqlCommand delete = new(
                 "DELETE FROM TeamLeads WHERE Name=@Name", conn);
             delete.Parameters.AddWithValue("@Name", name);
             delete.ExecuteNonQuery();
 
-
+            // REMOVE FROM MEMORY
             TeamLeads.RemoveAll(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             Employees.Where(e => e.TeamLeadName == name)
                      .ToList()
@@ -374,7 +374,7 @@ namespace EmployeeManagementSystem.Services
             Console.WriteLine("Team Lead deleted successfully.");
         }
 
-        
+        // Deleting Employee
         public static void DeleteEmployeeByName()
         {
             string name = ReadString("Employee Name to delete: ");
@@ -402,7 +402,7 @@ namespace EmployeeManagementSystem.Services
         }
 
 
-        
+
 
         private static void ReSyncAutoId(SqlConnection conn)
         {
@@ -426,7 +426,7 @@ namespace EmployeeManagementSystem.Services
         }
 
 
-
+        // Input Validation 
         public static int ReadInt(string msg)
         {
             while (true)
