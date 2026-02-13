@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vj691\\OneDrive - Comcast\\Documents\\c# learning\\EmployeeManagementSystem_Database\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7FE51A51-4DFA-E6CA-B9DF-31145F91766A}|EmployeeManagementSystem_Database\\EmployeeManagementSystem_Database.csproj|c:\\users\\vj691\\onedrive - comcast\\documents\\c# learning\\employeemanagementsystem_database\\employeemanagementsystem_database\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7FE51A51-4DFA-E6CA-B9DF-31145F91766A}|EmployeeManagementSystem_Database\\EmployeeManagementSystem_Database.csproj|solutionrelative:employeemanagementsystem_database\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\vj691\\OneDrive - Comcast\\Documents\\c# learning\\EmployeeManagementSystem_Database\\EmployeeManagementSystem_Database\\Program.cs",
+              "RelativeDocumentMoniker": "EmployeeManagementSystem_Database\\Program.cs",
+              "ToolTip": "C:\\Users\\vj691\\OneDrive - Comcast\\Documents\\c# learning\\EmployeeManagementSystem_Database\\EmployeeManagementSystem_Database\\Program.cs",
+              "RelativeToolTip": "EmployeeManagementSystem_Database\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T09:17:25.327Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
