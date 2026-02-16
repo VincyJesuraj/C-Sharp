@@ -4,8 +4,10 @@
     "\\Databse",
     "\\Interfaces",
     "\\Models",
+    "\\obj\\Debug",
+    "\\obj\\Release",
     "\\Services"
   ],
-  "SelectedNode": "\\Models\\Employee.cs",
+  "SelectedNode": "\\Models\\TeamLead.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -121,8 +121,8 @@ namespace EmployeeManagementSystem.Services
             Managers.Add(m);
 
             using SqlConnection con = new(connectionString);
-            SqlCommand cmd = new(
-                "INSERT INTO Managers VALUES (@Id,@Name,@Dept,@Salary)", con);
+            SqlCommand cmd = new SqlCommand("sp_AddManager", con);
+            cmd.CommandType = CommandType.StoredProcedure; 
 
             cmd.Parameters.AddWithValue("@Id", m.Id);
             cmd.Parameters.AddWithValue("@Name", m.Name);
@@ -155,8 +155,8 @@ namespace EmployeeManagementSystem.Services
             TeamLeads.Add(t);
 
             using SqlConnection con = new(connectionString);
-            SqlCommand cmd = new(
-                "INSERT INTO TeamLeads VALUES (@Id,@Name,@Dept,@Salary,@Mgr)", con);
+            SqlCommand cmd = new SqlCommand("sp_AddTeamLead", con);
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@Id", t.Id);
             cmd.Parameters.AddWithValue("@Name", t.Name);
@@ -229,70 +229,93 @@ namespace EmployeeManagementSystem.Services
         public static void TeamSizeTeamLead()
         {
             string name = ReadString("Team Lead Name: ");
-            var tl = TeamLeads.FirstOrDefault(t => t.Name == name);
 
-            if (tl == null)
-            {
-                Console.WriteLine("Not found. Enter another name.");
-                return;
-            }
+            using SqlConnection conn = new(connectionString);
+            conn.Open();
 
-            Console.WriteLine($"Team size = {tl.GetTeamSize()}");
+            SqlCommand cmd = new SqlCommand("sp_GetTeamSize_TeamLead", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@TeamLeadName", name);
+
+            object result = cmd.ExecuteScalar();
+
+            Console.WriteLine($"Team size = {result}");
         }
+
 
         // Team size of the manager = no. of employees + no. of Team Lead
         public static void TeamSizeManager()
         {
             string name = ReadString("Manager Name: ");
-            var m = Managers.FirstOrDefault(x => x.Name == name);
 
-            if (m == null)
-            {
-                Console.WriteLine("Not found. Enter another name.");
-                return;
-            }
+            using SqlConnection conn = new(connectionString);
+            conn.Open();
 
-            Console.WriteLine($"Team size = {m.GetTeamSize()}");
+            SqlCommand cmd = new SqlCommand("sp_GetTeamSize_Manager", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ManagerName", name);
+
+            object result = cmd.ExecuteScalar();
+
+            Console.WriteLine($"Team size = {result}");
         }
+
 
         // Showing Employees under Manager
         public static void ShowEmployeesUnderManager()
         {
             string manager = ReadString("Manager Name: ");
-            var tls = TeamLeads.Where(t => t.ManagerName == manager).ToList();
 
-            if (!tls.Any())
+            using SqlConnection conn = new(connectionString);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("sp_GetEmployeesUnderManager", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@ManagerName", manager);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
             {
                 Console.WriteLine("Not found.");
                 return;
             }
 
-            tls.ForEach(t => t.Display());
-
-            Employees.Where(e => tls.Any(t => t.Name == e.TeamLeadName))
-                     .ToList()
-                     .ForEach(e => e.Display());
+            while (reader.Read())
+            {
+                Console.WriteLine(
+                    $"Name:{reader["Name"]} | Dept:{reader["Department"]} | Salary:{reader["Salary"]} | Role:{reader["Role"]}");
+            }
         }
+
 
         // Showing Employees by Department
         public static void ShowEmployeesByDepartment()
         {
             string dept = ReadString("Department: ");
 
-            var result = Employees.Cast<IDisplayable>()
-                .Concat(TeamLeads)
-                .Concat(Managers)
-                .Where(x => (x as Employee).Department == dept)
-                .ToList();
+            using SqlConnection conn = new(connectionString);
+            conn.Open();
 
-            if (!result.Any())
+            SqlCommand cmd = new SqlCommand("sp_GetEmployeesByDepartment", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Department", dept);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
             {
                 Console.WriteLine("Not found.");
                 return;
             }
 
-            result.ForEach(x => x.Display());
+            while (reader.Read())
+            {
+                Console.WriteLine(
+                    $"ID:{reader["Id"]} | Name:{reader["Name"]} | Dept:{reader["Department"]} | Salary:{reader["Salary"]} | Role:{reader["Role"]}");
+            }
         }
+
 
         // Deleting Manager 
         public static void DeleteManagerByName()
@@ -313,16 +336,11 @@ namespace EmployeeManagementSystem.Services
             }
 
 
-            SqlCommand clearRefs = new(
-                "UPDATE TeamLeads SET ManagerName = NULL WHERE ManagerName=@Name", conn);
-            clearRefs.Parameters.AddWithValue("@Name", name);
-            clearRefs.ExecuteNonQuery();
+            SqlCommand cmd = new SqlCommand("sp_DeleteManager", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Name", name);
 
-
-            SqlCommand delete = new(
-                "DELETE FROM Managers WHERE Name=@Name", conn);
-            delete.Parameters.AddWithValue("@Name", name);
-            delete.ExecuteNonQuery();
+            int rows = cmd.ExecuteNonQuery();
 
 
             Managers.RemoveAll(m => m.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -353,16 +371,11 @@ namespace EmployeeManagementSystem.Services
             }
 
             // Clear teamlead reference in SQL
-            SqlCommand clearRefs = new(
-                "UPDATE Employees SET TeamLeadName = NULL WHERE TeamLeadName=@Name", conn);
-            clearRefs.Parameters.AddWithValue("@Name", name);
-            clearRefs.ExecuteNonQuery();
+            SqlCommand cmd = new SqlCommand("sp_DeleteTeamLead", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Name", name);
 
-            // Delete from SQL
-            SqlCommand delete = new(
-                "DELETE FROM TeamLeads WHERE Name=@Name", conn);
-            delete.Parameters.AddWithValue("@Name", name);
-            delete.ExecuteNonQuery();
+            int rows = cmd.ExecuteNonQuery();
 
             // REMOVE FROM MEMORY
             TeamLeads.RemoveAll(t => t.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -382,11 +395,11 @@ namespace EmployeeManagementSystem.Services
             using SqlConnection conn = new(connectionString);
             conn.Open();
 
-            SqlCommand delete = new(
-                "DELETE FROM Employees WHERE Name=@Name", conn);
-            delete.Parameters.AddWithValue("@Name", name);
+            SqlCommand cmd = new SqlCommand("sp_DeleteEmployee", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Name", name);
 
-            int rows = delete.ExecuteNonQuery();
+            int rows = cmd.ExecuteNonQuery();
 
             if (rows == 0)
             {
